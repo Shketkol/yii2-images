@@ -14,6 +14,8 @@
 
 namespace shketkol\images\src\models;
 
+use claviska\SimpleImage;
+use Imagick;
 use shketkol\images\src\ModuleTrait;
 use Yii;
 use yii\base\Exception;
@@ -51,8 +53,8 @@ class Image extends \yii\db\ActiveRecord
 
     public function getUrl($size = false){
         $urlSize = ($size) ? '_'.$size : '';
-        $url = Url::toRoute([
-            '/'.$this->getPrimaryKey().'/images/image-by-item-and-alias',
+        $url = Url::to([
+            '/yii2images/images/image-by-item-and-alias',
             'item' => $this->modelName.$this->itemId,
             'dirtyAlias' =>  $this->urlAlias.$urlSize.'.'.$this->getExtension()
         ]);
@@ -98,10 +100,10 @@ class Image extends \yii\db\ActiveRecord
     {
         $sizes = false;
         if($this->getModule()->graphicsLibrary == 'Imagick'){
-            $image = new \Imagick($this->getPathToOrigin());
+            $image = new Imagick($this->getPathToOrigin());
             $sizes = $image->getImageGeometry();
         }else{
-            $image = new \abeautifulsite\SimpleImage($this->getPathToOrigin());
+            $image = new SimpleImage($this->getPathToOrigin());
             $sizes['width'] = $image->get_width();
             $sizes['height'] = $image->get_height();
         }
@@ -183,7 +185,7 @@ class Image extends \yii\db\ActiveRecord
                 $image->writeImage($pathToSave);
             }else{
 
-                $image = new \abeautifulsite\SimpleImage($imagePath);
+                $image = new SimpleImage($imagePath);
 
                 if($size){
                     if($size['height'] && $size['width']){
@@ -210,7 +212,7 @@ class Image extends \yii\db\ActiveRecord
 
                     $waterMarkPath = Yii::getAlias($this->getModule()->waterMark);
 
-                    $waterMark = new \abeautifulsite\SimpleImage($waterMarkPath);
+                    $waterMark = new SimpleImage($waterMarkPath);
 
 
                     if(
@@ -239,7 +241,7 @@ class Image extends \yii\db\ActiveRecord
 
                 }
 
-                $image->save($pathToSave, $this->getModule()->imageCompressionQuality );
+                $image->toFile($pathToSave, null, $this->getModule()->imageCompressionQuality );
             }
 
         return $image;

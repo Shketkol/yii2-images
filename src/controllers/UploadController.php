@@ -120,6 +120,6 @@ class UploadController extends Controller
 
     protected function removeDirectory($image)
     {
-        rmdir($this->getModule()->imagesStorePath . $image->modelName . '/' . $image->modelName.$image->itemId);
+        rmdir($this->getModule()->imagesStorePath .'/'. $image->modelName . 's/' . $image->modelName.$image->itemId);
     }
 }

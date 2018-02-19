@@ -14,7 +14,8 @@
     "require": {
         "yiisoft/yii2": "~2.0.0",
         "kartik-v/yii2-krajee-base": "~1.7",
-        "kartik-v/bootstrap-fileinput": "~4.4"
+        "kartik-v/bootstrap-fileinput": "~4.4",
+        "abeautifulsite/simpleimage": "~3"
     },
     "autoload": {
         "psr-4": {

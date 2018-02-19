@@ -80,6 +80,24 @@ class ImageBehave extends Behavior
         return $id;
     }
 
+    public function getImageById($id){
+        if ($this->getModule()->className === null) {
+            $imageQuery = Image::find();
+        } else {
+            $class = $this->getModule()->className;
+            $imageQuery = $class::find();
+        }
+        $finder = $this->getImagesFinder(['id' => $id]);
+        $imageQuery->where($finder);
+
+        $img = $imageQuery->one();
+        if(!$img){
+            return $this->getModule()->getPlaceHolder();
+        }
+
+        return $img;
+    }
+
     public function getImagesByNameAttach($name = '')
     {
         if ($this->getModule()->className === null) {
@@ -422,5 +440,23 @@ class ImageBehave extends Behavior
         $imagesCount = count($this->owner->getImages());
 
         return $aliasWords . '-' . intval($imagesCount + 1);
+    }
+
+    public function setImages($name, $userId = null)
+    {
+        if (is_null($userId)){
+            $userId = Yii::$app->user->id;
+        }
+        $models = Image::find()
+            ->where(['name' => $name, 'users_id' => $userId])
+            ->all();
+        if (!empty($models)){
+            foreach ($models as $model){
+                $path = $model->getPathToOrigin();
+                if ($this->attachImage($path, false, $name)){
+                    $model->delete();
+                };
+            }
+        }
     }
 }
