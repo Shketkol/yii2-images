@@ -119,7 +119,7 @@ public function behaviors()
     ]) ?>
 
 ```
-4.in controller action create
+5.in controller action create
 ```
 $model->setImages($name);
 ```
