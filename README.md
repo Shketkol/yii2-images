@@ -16,7 +16,12 @@ php composer.phar require --prefer-dist shketkol/yii2-images "*"
 or add
 
 ```
-"shketkol/yii2-images": "*"
+"repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Shketkol/yii2-images.git"
+        }
+    ]
 ```
 
 to the require section of your `composer.json` file.
